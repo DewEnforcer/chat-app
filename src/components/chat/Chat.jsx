@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { Component } from 'react'
 import {io} from "socket.io-client";
 import Loader from '../Loader';
 
@@ -11,57 +11,63 @@ const user = {
     username: "Dew"
 }
 
-export default function Chat({chatId}) {
-    const [roomMsgs, setRoomMsgs] = useState([]);
-    const [input, setInput] = useState("");
-    const [connected, setConnected] = useState(false);
-    const [socket, setSocket] = useState();
-    
-    const handleMessageType = (val) => {
-        setInput(val);
+export default class Chat extends Component {
+    state = {
+        roomMsgs: [],
+        input: "",
+        connected: false,
+        socket: null
     }
-    const handleMessageSubmit = () => {
-        if (input.length === 0) return;
-        console.log("Submitting ", input);
-        console.log(socket);
+
+    handleMessageType = val => {
+        const newState = {...this.state};
+        newState.input = val;
+        this.setState(newState);
+    }
+
+    handleMessageSubmit = () => {
+        const {socket, input} = this.state;
+        if (input.length <= 0) return;
+
         socket.emit("msg", {msg: input});
     }
-    let getRoomMsgs;
 
-    useEffect(() => {
+    componentDidMount() {
         let newSocket = io("http://localhost:5000" ,{transports: ['websocket']});
 
         newSocket.on("connect", () => {
-            setConnected(true);
+            let chatId = this.props.chatId;
+            this.setState({...this.state, connected: true});
             newSocket.emit("chatConnect", {chatId, user});
         })
 
         newSocket.on("data", ({msgs}) => {
-            setRoomMsgs(msgs);
+            this.setState({...this.state, roomMsgs: msgs});
         })
         newSocket.on("msg", (msg) => {
-            console.log(getRoomMsgs());
-            const newMsgs = [...getRoomMsgs(), msg];
-            console.log(newMsgs);
-            setRoomMsgs(newMsgs);
+            const newState = {...this.state};
+            newState.roomMsgs = [...newState.roomMsgs, msg];
+            this.setState(newState);
         })
+        
+        const newState = {...this.state};
+        newState.socket = newSocket;
+        this.setState(newState);
+    }
 
-        setSocket(newSocket);
+    componentWillUnmount() {
+        this.state.socket.disconnect();
+    }
 
+    render() {
+        const {roomMsgs, input} = this.state;
 
-        return () => socket.disconnect();
-    }, []);
-    useEffect(() => {
-       getRoomMsgs = () => roomMsgs;
-    }, [roomMsgs])
-
-    if (!connected) return <Loader/>
-
-    return (
+        return (
         <div className="chat_wrapper flex_column">
             <MessageList msgs={roomMsgs}/>
             <Status statusId={1} author={{username: "Tester"}}/>
-            <TypeBar onChange={handleMessageType} onSubmit={handleMessageSubmit} value={input}/>
+            <TypeBar onChange={this.handleMessageType} onSubmit={this.handleMessageSubmit} value={input}/>
         </div>
-    )
+        )
+    }
 }
