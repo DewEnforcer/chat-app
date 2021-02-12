@@ -1,35 +1,34 @@
 import React, { Component } from 'react'
-import Joi from "joi-browser";
-import Form from "../common/form";
-import authService from "../../services/authService";
+import Form from './common/form'
 
-export default class LoginForm extends Form {
+export default class RegisterForm extends Form {
     state = {
         data: {
             username: "",
+            email: "",
             password: ""
+        }, 
+        errors: {
+
         },
-        errors: {},
         inputs: [
             {path: "username", name: "username", label: "Username", type: "text"},
+            {path: "email", name: "email", label: "E-mail", type: "text"},
             {path: "password", name: "password", label: "Password", type: "password"},
         ]
     }
 
     schema = {
         username: Joi.string().required(),
+        email: Joi.string().email().required(),
         password: Joi.string().required(),
-    }
-
-    doSubmit = async () => {
-        authService.login(this.state.data);
     }
 
     render() {
         return (
             <form onSubmit={this.handleSubmit}>
                 {this.state.inputs.map(i => this.renderInput(i))}
-                {this.renderButton("Log-in!")}
+                {this.renderButton("Sign-up!")}
             </form>
         )
     }
