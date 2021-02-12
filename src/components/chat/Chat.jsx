@@ -16,6 +16,7 @@ export default class Chat extends Component {
         roomMsgs: [],
         input: "",
         connected: false,
+        activity: null,
         socket: null
     }
 
@@ -30,6 +31,8 @@ export default class Chat extends Component {
         if (input.length <= 0) return;
 
         socket.emit("msg", {msg: input});
+
+        this.setState({...this.state, input: ""});
     }
 
     componentDidMount() {
@@ -45,6 +48,7 @@ export default class Chat extends Component {
             this.setState({...this.state, roomMsgs: msgs});
         })
         newSocket.on("msg", (msg) => {
+            if (!msg) return;
             const newState = {...this.state};
             newState.roomMsgs = [...newState.roomMsgs, msg];
             this.setState(newState);
@@ -60,12 +64,12 @@ export default class Chat extends Component {
     }
 
     render() {
-        const {roomMsgs, input} = this.state;
+        const {roomMsgs, input, activity} = this.state;
 
         return (
         <div className="chat_wrapper flex_column">
             <MessageList msgs={roomMsgs}/>
-            <Status statusId={1} author={{username: "Tester"}}/>
+            {activity && <Status statusId={activity.statusId} author={activity.user}/>}
             <TypeBar onChange={this.handleMessageType} onSubmit={this.handleMessageSubmit} value={input}/>
         </div>
         )

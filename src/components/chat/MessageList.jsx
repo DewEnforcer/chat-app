@@ -1,11 +1,19 @@
-import React from 'react'
+import React, { Component } from 'react'
 import Message from './Message'
 
-export default function MessageList({msgs}) {
-    console.log(msgs);
-    return (
-        <div className="message_list list">
-            {msgs.map(m => <Message key={m.id} msg={m}/>)}
-        </div>
-    )
+export default class MessageList extends Component {
+    listEl = React.createRef();
+
+    componentDidUpdate() {
+        if (!this.listEl.current.lastChild) return;
+        this.listEl.current.lastChild.scrollIntoView();
+    }
+
+    render() {
+        return (
+            <div ref={this.listEl} className="message_list list">
+                {this.props.msgs.map(m => <Message key={m.id} msg={m}/>)}
+            </div>
+        )
+    }
 }
