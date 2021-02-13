@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Joi from "joi-browser";
 import Form from './common/form'
 
 export default class RegisterForm extends Form {

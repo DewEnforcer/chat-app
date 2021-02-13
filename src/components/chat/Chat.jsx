@@ -64,7 +64,11 @@ export default class Chat extends Component {
     }
 
     render() {
-        const {roomMsgs, input, activity} = this.state;
+        const {roomMsgs, input, activity, connected} = this.state;
+
+        if (!this.props.chatId) return <h1>No chat room with given ID has been found</h1>
+
+        if (!connected) return <Loader title="Connecting to the chat room..."/>
 
         return (
         <div className="chat_wrapper flex_column">
