@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Message from './Message'
+import SystemMessage from './SystemMessage';
 
 export default class MessageList extends Component {
     listEl = React.createRef();
@@ -10,9 +11,12 @@ export default class MessageList extends Component {
     }
 
     render() {
+        const {msgs} = this.props;
+
         return (
             <div ref={this.listEl} className="message_list list">
-                {this.props.msgs.map(m => <Message key={m.id} msg={m}/>)}
+                {msgs.length === 0 && <span>Welcome to the chatroom!</span>}
+                {msgs.map(m => m.author === "system" ? <SystemMessage msgData={m}/> :<Message key={m.id} msg={m}/>)}
             </div>
         )
     }

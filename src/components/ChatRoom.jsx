@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import ChatUserContext from '../context/ChatUserContext';
 import Chat from './chat/Chat'
 import InviteBar from './chat/InviteBar'
 
@@ -17,8 +18,10 @@ export default function ChatRoom({history}) {
 
     return (
         <div className="chat_room" ref={chatRoomEl}>
-            <Chat chatId={token} user={user}/>
-            <InviteBar chatId={token}/>
+            <ChatUserContext.Provider value={user}>
+                <Chat chatId={token} user={user}/>
+                <InviteBar chatId={token}/>
+            </ChatUserContext.Provider>
         </div>
     )
 }
