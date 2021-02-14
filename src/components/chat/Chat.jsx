@@ -3,6 +3,7 @@ import {io} from "socket.io-client";
 import Loader from '../Loader';
 
 import TypeBar from '../TypeBar'
+import ChatHeader from './ChatHeader';
 import MessageList from './MessageList'
 import Status from './Status'
 
@@ -12,7 +13,8 @@ export default class Chat extends Component {
         input: "",
         connected: false,
         activity: null,
-        socket: null
+        socket: null,
+        chatName: ""
     }
 
     handleMessageType = val => {
@@ -40,8 +42,8 @@ export default class Chat extends Component {
             newSocket.emit("connectRequest", {chatId, user});
         })
 
-        newSocket.on("chatData", (msgs) => {
-            this.setState({...this.state, roomMsgs: msgs});
+        newSocket.on("chatData", ({msgs, chatName}) => {
+            this.setState({...this.state, roomMsgs: msgs, chatName});
         })
         newSocket.on("msg", (msg) => {
             if (!msg) return;
@@ -60,12 +62,13 @@ export default class Chat extends Component {
     }
 
     render() {
-        const {roomMsgs, input, activity, connected} = this.state;
+        const {roomMsgs, input, activity, connected, chatName} = this.state;
 
         if (!connected) return <Loader title="Connecting..."/>
 
         return (
         <div className="chat_wrapper flex_column">
+            <ChatHeader title={chatName}/>
             <MessageList msgs={roomMsgs}/>
             {activity && <Status statusId={activity.statusId} author={activity.user}/>}
             <TypeBar onChange={this.handleMessageType} onSubmit={this.handleMessageSubmit} value={input}/>
