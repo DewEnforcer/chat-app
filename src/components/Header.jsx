@@ -3,7 +3,7 @@ import Navigation from './Navigation'
 
 const navItems = [
     {id: 1, path: "/joinChat", label: "Join chat"},
-    {id: 2, path: "/createChat", label: "New chat"},
+    {id: 2, path: "/newChat", label: "New chat"},
 ]
 
 export default function Header() {

@@ -6,11 +6,6 @@ import TypeBar from '../TypeBar'
 import MessageList from './MessageList'
 import Status from './Status'
 
-const user = {
-    id: 1,
-    username: "Dew"
-}
-
 export default class Chat extends Component {
     state = {
         roomMsgs: [],
@@ -40,6 +35,7 @@ export default class Chat extends Component {
 
         newSocket.on("connect", () => {
             let chatId = this.props.chatId;
+            let user = this.props.user;
             this.setState({...this.state, connected: true});
             newSocket.emit("chatConnect", {chatId, user});
         })
@@ -66,9 +62,7 @@ export default class Chat extends Component {
     render() {
         const {roomMsgs, input, activity, connected} = this.state;
 
-        if (!this.props.chatId) return <h1>No chat room with given ID has been found</h1>
-
-        if (!connected) return <Loader title="Connecting to the chat room..."/>
+        if (!connected) return <Loader title="Connecting..."/>
 
         return (
         <div className="chat_wrapper flex_column">
