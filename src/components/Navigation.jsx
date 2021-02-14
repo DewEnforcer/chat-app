@@ -5,7 +5,7 @@ export default function Navigation({navItems, appName}) {
     return (
         <nav>
             <ul className="bg-dark">
-                {appName && <span className="header_appname">{appName}</span>}
+                {appName && <NavItem path="/" label={appName}/>}
                 {navItems.map(n => <NavItem key={n.id} path={n.path} label={n.label}/>)}
             </ul>
         </nav>
