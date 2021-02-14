@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Joi from "joi-browser";
+import { toast } from 'react-toastify';
 
 import Form from '../common/form'
 import chatService from "../../services/chatService";
@@ -34,7 +35,7 @@ export default class JoinChat extends Form {
 
     doSubmit = async () => {
         const {data, ok} = await chatService.joinChat(this.state.data);
-        if (!ok) return console.log("Failed to join chat");
+        if (!ok) return toast.error("Unable to join the chat, please check your id or try again later.");
 
         this.props.history.push("/chatRoom", data);
     }

@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import {io} from "socket.io-client";
-import Loader from '../Loader';
+import { toast } from 'react-toastify';
 
+import Loader from '../Loader';
 import TypeBar from '../TypeBar'
 import ChatHeader from './ChatHeader';
 import MessageList from './MessageList'
@@ -50,6 +51,9 @@ export default class Chat extends Component {
             const newState = {...this.state};
             newState.roomMsgs = [...newState.roomMsgs, msg];
             this.setState(newState);
+        })
+        newSocket.on("disconnect", () => {
+            toast.error("Lost connection to the server, please wait for connection to be reestablished or create a new chat room.");
         })
         
         const newState = {...this.state};

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Joi from "joi-browser";
+import { toast } from 'react-toastify';
 
 import Form from '../common/form'
 import chatService from "../../services/chatService";
@@ -28,7 +29,7 @@ export default class CreateChat extends Form {
 
     doSubmit = async () => {
         const {data, ok} = await chatService.createChat(this.state.data);
-        if (!ok) return console.log("Failed to create chat");
+        if (!ok)  return toast.error("Unable to create new, make sure you entered all required data or try again later.");
 
         this.props.history.push("/chatRoom", data);
     }
