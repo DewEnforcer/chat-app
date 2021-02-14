@@ -25,7 +25,7 @@ export default class Chat extends Component {
         const {socket, input} = this.state;
         if (input.length <= 0) return;
 
-        socket.emit("msg", {msg: input});
+        socket.emit("msgRequest", {text: input});
 
         this.setState({...this.state, input: ""});
     }
@@ -37,10 +37,10 @@ export default class Chat extends Component {
             let chatId = this.props.chatId;
             let user = this.props.user;
             this.setState({...this.state, connected: true});
-            newSocket.emit("chatConnect", {chatId, user});
+            newSocket.emit("connectRequest", {chatId, user});
         })
 
-        newSocket.on("data", ({msgs}) => {
+        newSocket.on("chatData", (msgs) => {
             this.setState({...this.state, roomMsgs: msgs});
         })
         newSocket.on("msg", (msg) => {

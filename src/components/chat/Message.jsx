@@ -1,8 +1,8 @@
-import React from 'react'
-
-const user = {id: 1};
+import React, { useContext } from 'react'
+import ChatUserContext from '../../context/ChatUserContext';
 
 export default function Message({msg}) {
+    const user = useContext(ChatUserContext);
     const {text, author} = msg; //use msg object
 
     let cls = "message_box flex_column";
