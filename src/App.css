@@ -216,7 +216,8 @@ a {
 }
 /* user overview */
 .chat_users_overview {
-  width: 60%;
+  width: auto !important;
+  padding: 0.5rem;
 }
 .chat_users_overview span {
   font-size: 18px;
