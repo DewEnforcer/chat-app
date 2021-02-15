@@ -93,7 +93,7 @@ a {
 /* chat */
 .chat_room {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr 2fr 1fr;
 }
 /* invite box */
 .invite_box {
@@ -137,6 +137,7 @@ a {
   flex-flow: column nowrap;
   align-items: center;
   align-self: center;
+  justify-self: center;
 }
 .chat_header {
   width: 100%;
