@@ -19,8 +19,8 @@ export default function ChatRoom({history}) {
     return (
         <div className="chat_room" ref={chatRoomEl}>
             <ChatUserContext.Provider value={user}>
-                <Chat chatId={token} user={user}/>
                 <InviteBar chatId={token}/>
+                <Chat chatId={token} user={user}/>
             </ChatUserContext.Provider>
         </div>
     )
