@@ -96,7 +96,7 @@ a {
   grid-template-columns: 1fr 2fr;
 }
 /* invite box */
-.invite_box {
+.invite_box, .chat_users_overview {
   width: 50%;
   justify-self: center;
   align-self: flex-start;
@@ -212,4 +212,12 @@ a {
 .message_box_me {
   margin-left: 0;
   margin-right: 1rem;
+}
+/* user overview */
+.chat_users_overview {
+  width: 60%;
+}
+.chat_users_overview span {
+  font-size: 18px;
+  color: rgb(170,170,170);
 }

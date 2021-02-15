@@ -2,17 +2,17 @@ import React, { useEffect, useRef, useState } from 'react'
 import ChatUserContext from '../context/ChatUserContext';
 import Chat from './chat/Chat'
 import InviteBar from './chat/InviteBar'
+import UsersOverview from './chat/UsersOverview';
 
 export default function ChatRoom({history}) {
     const chatRoomEl = useRef();
     const [user, setUser] = useState();
+    const [chatUsers, setChatUsers] = useState([]);
     const token = history.location.state.chatId;
 
     
     useEffect(() => {
-        window.addEventListener("beforeunload", () => {
-            alert("Are you sure you want to leave this chat?")
-        })
+        window.onbeforeunload = () => alert("Stop");
         setUser(history.location.state.user);
     }, [])
 
@@ -20,7 +20,8 @@ export default function ChatRoom({history}) {
         <div className="chat_room" ref={chatRoomEl}>
             <ChatUserContext.Provider value={user}>
                 <InviteBar chatId={token}/>
-                <Chat chatId={token} user={user}/>
+                <Chat setChatUsers={setChatUsers} chatId={token} user={user}/>
+                <UsersOverview users={chatUsers}/>
             </ChatUserContext.Provider>
         </div>
     )
