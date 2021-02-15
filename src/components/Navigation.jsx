@@ -4,7 +4,7 @@ import NavItem from './NavItem'
 export default function Navigation({navItems, appName}) {
     return (
         <nav>
-            <ul className="bg-dark">
+            <ul className="bg-dark navbar">
                 {appName && <NavItem path="/" label={appName}/>}
                 {navItems.map(n => <NavItem key={n.id} path={n.path} label={n.label}/>)}
             </ul>

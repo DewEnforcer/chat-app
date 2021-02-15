@@ -16,7 +16,7 @@ export default class MessageList extends Component {
         return (
             <div ref={this.listEl} className="message_list list">
                 {msgs.length === 0 && <span>Welcome to the chatroom!</span>}
-                {msgs.map(m => m.author === "system" ? <SystemMessage msgData={m}/> :<Message key={m.id} msg={m}/>)}
+                {msgs.map(m => m.author === "system" ? <SystemMessage key={m.id} msgData={m}/> :<Message key={m.id} msg={m}/>)}
             </div>
         )
     }

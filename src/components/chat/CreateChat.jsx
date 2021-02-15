@@ -36,7 +36,8 @@ export default class CreateChat extends Form {
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
+            <form className="form create_chat_form" onSubmit={this.handleSubmit}>
+                <h1>Create a new chat!</h1>
                 {this.state.inputs.map(i => this.renderInput(i))}
                 {this.renderButton("Create new chat!")}
             </form>

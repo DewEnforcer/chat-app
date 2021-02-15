@@ -20,7 +20,7 @@ export default class JoinChat extends Form {
 
     schema = {
         username: Joi.string().required(),
-        chatId: Joi.string().max(256).allow("").required()
+        chatId: Joi.string().max(256).required()
     }
 
     componentDidMount() {
@@ -42,7 +42,8 @@ export default class JoinChat extends Form {
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
+            <form className="form join_chat_form" onSubmit={this.handleSubmit}>
+                <h1>Join an already existing chat</h1>
                 {this.state.inputs.map(i => this.renderInput(i))}
                 {this.renderButton("Join chat!")}
             </form>
