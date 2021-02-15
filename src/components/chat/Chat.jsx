@@ -46,6 +46,7 @@ export default class Chat extends Component {
         newSocket.on("chatData", ({msgs, chatName}) => {
             this.setState({...this.state, roomMsgs: msgs, chatName});
         })
+        newSocket.on("chatUsers", data => this.props.setChatUsers(data));
         newSocket.on("msg", (msg) => {
             if (!msg) return;
             const newState = {...this.state};
