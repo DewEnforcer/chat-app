@@ -137,6 +137,7 @@ a {
   flex-flow: column nowrap;
   align-items: center;
   align-self: center;
+  justify-self: center;
 }
 .chat_header {
   width: 100%;
