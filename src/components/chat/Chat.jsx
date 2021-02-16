@@ -7,7 +7,7 @@ import TypeBar from '../TypeBar'
 import ChatHeader from './ChatHeader';
 import MessageList from './MessageList'
 import Status from './Status'
-import createSocket from '../../sockets/chatSocket';
+import createChatSocket from '../../sockets/createChatSocket';
 
 export default class Chat extends Component {
     state = {
@@ -59,7 +59,7 @@ export default class Chat extends Component {
     }
 
     componentDidMount() {
-        const socket = createSocket("http://localhost:5000", this.handleConnect, this.handleChatData, this.handleChatUsers, this.handleMsg, this.handleDisconnect);
+        const socket = createChatSocket("http://localhost:5000", this.handleConnect, this.handleChatData, this.handleChatUsers, this.handleMsg, this.handleDisconnect);
         this.setState({...this.state, socket});
     }
 
