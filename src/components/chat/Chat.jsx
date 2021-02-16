@@ -7,6 +7,7 @@ import TypeBar from '../TypeBar'
 import ChatHeader from './ChatHeader';
 import MessageList from './MessageList'
 import Status from './Status'
+import createSocket from '../../sockets/chatSocket';
 
 export default class Chat extends Component {
     state = {
@@ -33,33 +34,33 @@ export default class Chat extends Component {
         this.setState({...this.state, input: ""});
     }
 
-    componentDidMount() {
-        let newSocket = io("http://localhost:5000" ,{transports: ['websocket']});
+    handleConnect = () => {
+        let chatId = this.props.chatId;
+        let user = this.props.user;
+        this.setState({...this.state, connected: true});
+        this.state.socket.emit("connectRequest", {chatId, user});
+    }
 
-        newSocket.on("connect", () => {
-            let chatId = this.props.chatId;
-            let user = this.props.user;
-            this.setState({...this.state, connected: true});
-            newSocket.emit("connectRequest", {chatId, user});
-        })
+    handleChatData = ({msgs, chatName}) => {
+        this.setState({...this.state, roomMsgs: msgs, chatName});
+    }
 
-        newSocket.on("chatData", ({msgs, chatName}) => {
-            this.setState({...this.state, roomMsgs: msgs, chatName});
-        })
-        newSocket.on("chatUsers", data => this.props.setChatUsers(data));
-        newSocket.on("msg", (msg) => {
-            if (!msg) return;
-            const newState = {...this.state};
-            newState.roomMsgs = [...newState.roomMsgs, msg];
-            this.setState(newState);
-        })
-        newSocket.on("disconnect", () => {
-            toast.error("Lost connection to the server, please wait for connection to be reestablished or create a new chat room.");
-        })
-        
+    handleChatUsers = data => this.props.setChatUsers(data)
+
+    handleMsg = msg => {
+        if (!msg) return;
         const newState = {...this.state};
-        newState.socket = newSocket;
+        newState.roomMsgs = [...newState.roomMsgs, msg];
         this.setState(newState);
+    }
+
+    handleDisconnect = (data) => {
+        if (!data.includes("client")) toast.error("Lost connection to the server, please wait for connection to be reestablished or create a new chat room.");
+    }
+
+    componentDidMount() {
+        const socket = createSocket("http://localhost:5000", this.handleConnect, this.handleChatData, this.handleChatUsers, this.handleMsg, this.handleDisconnect);
+        this.setState({...this.state, socket});
     }
 
     componentWillUnmount() {
