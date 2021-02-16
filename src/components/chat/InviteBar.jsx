@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default function InviteBar({chatId}) {
-    const url = "http://localhost:3000/joinChat/"+chatId;
+    const url = window.location.origin+"/joinChat/"+chatId;
 
     const handleCopyInvite = e => {
         e.preventDefault();

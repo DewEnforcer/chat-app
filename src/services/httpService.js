@@ -1,7 +1,7 @@
 import {create} from "apisauce";
 
 const client = create({
-    baseURL: "http://localhost:4000"
+    baseURL: process.env.API_BASE_URL
 })
 
 export default {

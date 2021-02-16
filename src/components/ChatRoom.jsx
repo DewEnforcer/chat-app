@@ -46,7 +46,7 @@ export default class ChatRoom extends Component {
     }
 
     componentDidMount() {
-        const socket = createChatSocket("http://localhost:5000", this.handleConnect, this.handleChatData, this.handleChatUsers, this.handleMsg, this.handleDisconnect);
+        const socket = createChatSocket(process.env.REACT_APP_CHAT_SOCKET, this.handleConnect, this.handleChatData, this.handleChatUsers, this.handleMsg, this.handleDisconnect);
         this.setState({...this.state, socket});
     }
 
